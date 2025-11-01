@@ -1,15 +1,23 @@
 <footer class="text-gray-200 bg-gray-700">
-    <div
-        class="max-w-7xl px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
+    {{-- الحاوية الرئيسية للفوتر --}}
+    <div class="max-w-7xl px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
+        
+        {{-- القسم الأول: شعار الأكاديمية --}}
         <div class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
             <a href="https://advancedacademy.edu.eg/Katamia/UnqStud/FirstStudInLec.aspx"
-                class="flex title-font  items-center md:justify-start justify-center text-white font-bold">
+                class="flex title-font items-center md:justify-start justify-center text-white font-bold">
                 <img src="\images\Logo.png" alt="Damascus University">
             </a>
         </div>
+
+        {{-- الأقسام الأخرى: روابط الفوتر --}}
         <div class="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
+            
+            {{-- كل عمود من الأعمدة الأربعة --}}
             <div class="lg:w-1/4 md:w-1/2 w-full px-4">
+                {{-- عنوان العمود --}}
                 <h2 class="title-font text-white font-bold tracking-widest text-sm mb-3">CATEGORIES</h2>
+                {{-- روابط العمود --}}
                 <nav class="list-none mb-10">
                     <li>
                         <a href="#" class="text-gray-200 hover:text-gray-400">First Link</a>
@@ -25,70 +33,60 @@
                     </li>
                 </nav>
             </div>
+
+            {{-- تكرار نفس العمود 3 مرات إضافية لتصبح 4 أعمدة كاملة --}}
             <div class="lg:w-1/4 md:w-1/2 w-full px-4">
                 <h2 class="title-font text-white font-bold tracking-widest text-sm mb-3">CATEGORIES</h2>
                 <nav class="list-none mb-10">
-                    <li>
-                        <a href="#" class="text-gray-200 hover:text-gray-400">First Link</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-200 hover:text-gray-400">Second Link</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-200 hover:text-gray-400">Third Link</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-200 hover:text-gray-400">Fourth Link</a>
-                    </li>
+                    <li><a href="#" class="text-gray-200 hover:text-gray-400">First Link</a></li>
+                    <li><a href="#" class="text-gray-200 hover:text-gray-400">Second Link</a></li>
+                    <li><a href="#" class="text-gray-200 hover:text-gray-400">Third Link</a></li>
+                    <li><a href="#" class="text-gray-200 hover:text-gray-400">Fourth Link</a></li>
                 </nav>
             </div>
+
             <div class="lg:w-1/4 md:w-1/2 w-full px-4">
                 <h2 class="title-font text-white font-bold tracking-widest text-sm mb-3">CATEGORIES</h2>
                 <nav class="list-none mb-10">
-                    <li>
-                        <a href="#" class="text-gray-200 hover:text-gray-400">First Link</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-200 hover:text-gray-400">Second Link</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-200 hover:text-gray-400">Third Link</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-200 hover:text-gray-400">Fourth Link</a>
-                    </li>
+                    <li><a href="#" class="text-gray-200 hover:text-gray-400">First Link</a></li>
+                    <li><a href="#" class="text-gray-200 hover:text-gray-400">Second Link</a></li>
+                    <li><a href="#" class="text-gray-200 hover:text-gray-400">Third Link</a></li>
+                    <li><a href="#" class="text-gray-200 hover:text-gray-400">Fourth Link</a></li>
                 </nav>
             </div>
+
             <div class="lg:w-1/4 md:w-1/2 w-full px-4">
                 <h2 class="title-font text-white font-bold tracking-widest text-sm mb-3">CATEGORIES</h2>
                 <nav class="list-none mb-10">
-                    <li>
-                        <a href="#" class="text-gray-200 hover:text-gray-400">First Link</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-200 hover:text-gray-400">Second Link</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-200 hover:text-gray-400">Third Link</a>
-                    </li>
-                    <li>
-                        <a href="#" class="text-gray-200 hover:text-gray-400">Fourth Link</a>
-                    </li>
+                    <li><a href="#" class="text-gray-200 hover:text-gray-400">First Link</a></li>
+                    <li><a href="#" class="text-gray-200 hover:text-gray-400">Second Link</a></li>
+                    <li><a href="#" class="text-gray-200 hover:text-gray-400">Third Link</a></li>
+                    <li><a href="#" class="text-gray-200 hover:text-gray-400">Fourth Link</a></li>
                 </nav>
             </div>
+
         </div>
     </div>
+
+    {{-- أسفل الفوتر: حقوق الطبع وروابط التواصل الاجتماعي --}}
     <div class="bg-gray-800">
         <div class="max-w-7xl mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
-            <p class="text-gray-300 text-sm text-center sm:text-left">© 2025 / 2026    EL_Mmotatawera (فرع القطاميه)
+            {{-- نص حقوق الطبع --}}
+            <p class="text-gray-300 text-sm text-center sm:text-left">
+                © 2025 / 2026 EL_Mmotatawera (فرع القطاميه)
             </p>
+
+            {{-- أيقونات وسائل التواصل الاجتماعي --}}
             <span class="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
+                {{-- فيسبوك --}}
                 <a href="https://www.facebook.com/motatawera.kattamia.officialpage" class="text-gray-300">
                     <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         class="w-5 h-5" viewBox="0 0 24 24">
                         <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
                     </svg>
                 </a>
+
+                {{-- تويتر --}}
                 <a href="" class="ml-3 text-gray-300">
                     <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         class="w-5 h-5" viewBox="0 0 24 24">
@@ -97,6 +95,8 @@
                         </path>
                     </svg>
                 </a>
+
+                {{-- انستغرام --}}
                 <a href="https://relaxed-banoffee-2df85b.netlify.app/" class="ml-3 text-gray-300">
                     <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
@@ -104,6 +104,8 @@
                         <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
                     </svg>
                 </a>
+
+                {{-- لينكدإن --}}
                 <a href="https://www.linkedin.com/in/waled-ali-49a550368/?trk=public-profile-join-page" class="ml-3 text-gray-300">
                     <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="0" class="w-5 h-5" viewBox="0 0 24 24">

@@ -16,7 +16,7 @@ class GitHubController extends Controller
     public function gitRedirect()
     {
         return Socialite::driver('github')
-        ->stateless()  // اختياري، حسب استخدامك للجلسات
+        // ->stateless() ; // اختياري، حسب استخدامك للجلسات
         ->redirect();
     }
 

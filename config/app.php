@@ -67,7 +67,8 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    // 'timezone' => 'UTC',
+    'timezone' => 'Africa/Cairo',
 
     /*
     |--------------------------------------------------------------------------
@@ -80,8 +81,9 @@ return [
     |
     */
 
-    'locale' => 'en',
-
+    // 'locale' => 'en',
+    
+     'locale' => 'ar',
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale
@@ -93,8 +95,9 @@ return [
     |
     */
 
-    'fallback_locale' => 'en',
-
+    // 'fallback_locale' => 'en',
+    'fallback_locale' => 'ar',
+    
     /*
     |--------------------------------------------------------------------------
     | Faker Locale
@@ -106,7 +109,8 @@ return [
     |
     */
 
-    'faker_locale' => 'en_US',
+    // 'faker_locale' => 'en_US',
+    'faker_locale' => 'ar_EG',
 
     /*
     |--------------------------------------------------------------------------

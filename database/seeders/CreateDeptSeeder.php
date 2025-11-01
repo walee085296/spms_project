@@ -8,14 +8,26 @@ use App\Models\Dept;
 class CreateDeptSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * تنفيذ عملية ملء البيانات (Seeding) في قاعدة البيانات.
+     *
+     * هذا الـ Seeder يقوم بإنشاء قسم (Department) واحد فقط
+     * باسم "IT Software" داخل جدول الأقسام (depts).
+     *
+     * يمكن توسيعه لاحقًا لإضافة أقسام أخرى مثل:
+     * - Computer Science
+     * - Information Systems
+     * - Network Engineering
      *
      * @return void
      */
     public function run()
     {
-
-        Dept::create(['name'=>'IT Software']);
-
+        /**
+         * إنشاء سجل جديد في جدول depts
+         * يحتوي على عمود واحد فقط وهو الاسم (name)
+         */
+        Dept::create([
+            'name' => 'IT Software'  // اسم القسم
+        ]);
     }
 }
