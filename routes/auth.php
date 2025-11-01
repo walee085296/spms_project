@@ -30,9 +30,9 @@ Route::post('/register', [RegisteredUserController::class, 'store'])
                 ->middleware('guest');
 
 // تسجيل الدخول - نموذج تسجيل الدخول
-Route::get(uri: '/login', [AuthenticatedSessionController::class, 'create'])
-                ->middleware('guest')
-                ->name('login');
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+    ->middleware('guest')
+    ->name('login');
 
 // تسجيل الدخول - معالجة بيانات تسجيل الدخول
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])
