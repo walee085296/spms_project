@@ -143,7 +143,7 @@ _Below is how you install and setup up your own version of the app._
    ```sh
    php artisan serve
    ```
-Now you should be able to login with the default administrator account ibrahemalnasser3@gmail.com and password 12345678 which you can change later.
+Now you should be able to login with the default administrator account waleelink@gmail.com and password 12345678 which you can change later.
    
 <p align="right">(<a href="#top">back to top</a>)</p>
 

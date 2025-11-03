@@ -108,3 +108,5 @@ Route::group(['middleware' => ['auth']], function () {
 
 // استدعاء Routes الخاصة بالمصادقة (login, register, forgot password ...)
 require __DIR__ . '/auth.php';
+
+
