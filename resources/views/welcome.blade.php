@@ -16,8 +16,10 @@
 
 </head>
 
-<body>
-    <div class="bg-white overflow-hidden">
+<body class="bg-gradient-to-br from-rose-50 via-white to-rose-100 min-h-screen">
+
+
+    <div class="bg-gradient-to-br from-rose-50 via-white to-rose-100 min-h-screen">
         <div class="max-w-7xl mx-auto">
             <div class="relative z-10 pb-8 bg-white sm:pb-16 md:pb-20 lg:max-w-2xl lg:w-full lg:pb-28 xl:pb-32">
                 <svg class="hidden lg:block absolute right-0 inset-y-0 h-full w-48 text-white transform translate-x-1/2"
@@ -48,17 +50,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="hidden md:block md:ml-6 md:pr-4">
+                                <div class="hidden md:block md:ml-6 md:pr-4">
                                 <a href="https://advancedacademy.edu.eg/Katamia/RootPages/Default.aspx"
-                                    class="font-bold text-gray-500 hover:text-gray-900 px-3 py-2 rounded-full hover:bg-gray-100">Home</a>
+                                    class="font-bold text-gray-500 hover:text-gray-900 px-3 py-2 rounded-full hover:bg-gray-100">المعهد</a>
                                 <a href="https://github.com/walee085296/spms_project"
-                                    class="font-bold text-gray-500 hover:text-gray-900 px-3 py-2 rounded-full hover:bg-gray-100">Repository</a>
+                                    class="font-bold text-gray-500 hover:text-gray-900 px-3 py-2 rounded-full hover:bg-gray-100">جيت هوب</a>
 
-<a href="https://github.com/walee085296/spms_project?tab=readme-ov-file#about-the-project"
-                                    class="font-bold text-gray-500 hover:text-gray-900 px-3 py-2 rounded-full hover:bg-gray-100">Issues</a>
+                                    <a href="https://github.com/walee085296/spms_project/issues"
+                                    class="font-bold text-gray-500 hover:text-gray-900 px-3 py-2 rounded-full hover:bg-gray-100">المشكلاات</a>
 
-                                <a href="https://github.com/walee0852963/walee0852963/blob/main/README.md"
-                                    class="font-bold text-gray-500 hover:text-gray-900 px-3 py-2 rounded-full hover:bg-gray-100">Suggestions</a>
+                                <a href="https://github.com/walee085296/spms_project/pulls"
+                                    class="font-bold text-gray-500 hover:text-gray-900 px-3 py-2 rounded-full hover:bg-gray-100">الاقتراحاات</a>
 
                                 @auth
                                 <a href="{{ route('dashboard') }}"
@@ -91,19 +93,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <div class="px-2 pt-2 pb-3 space-y-1">
-                                <a href="https://github.com/walee085296/spms_project?tab=readme-ov-file#about-the-project"
-                                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Product</a>
-
-                                <a href="https://github.com/walee085296/spms_project?tab=readme-ov-file#about-the-project"
-                                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Features</a>
-
-                                <a href="https://github.com/walee085296/spms_project?tab=readme-ov-file#about-the-project"
-                                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Marketplace</a>
-
-                                <a href="https://github.com/walee085296/spms_project?tab=readme-ov-file#about-the-project"
-                                    class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Company</a>
-                            </div>
+                          
                             @auth
                             <a href="{{ route('dashboard') }}"
                                 class="block w-full px-5 py-3 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100">
@@ -118,27 +108,29 @@
                         </div>
                     </div>
                 </div>
-
+                <br>
+     <hr>
                 <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
-                   
                     <div class="sm:text-center lg:text-left">
+                     
                         <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-                            <span class="block xl:inline">Tools to enrich your</span>
-                            <span class="block text-indigo-600 xl:inline">graduation project</span>
-                        </h1>
+                                   <span class="block xl:inline">أدوات تساعدك على تطوير</span>
+                                   <span class="block text-indigo-600 xl:inline" > مشروع تخرجك  </span>
+                                     </h1>
+                                     <br>
+                                      <hr>
                         <p
-                            class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 min-h-full py-11">
-                            All the tools you need to create the best projects and manage them with little to no
-                            effort!
-                            <br /> Created for the students of the EL_Mmotatawera (فرع القطاميه) to help ease the process
-                            of creating managing and viewing projects!
-                        </p>
+                              class="mt-3 text-base text-gray-500 sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0 min-h-full py-11">
+                                      جميع الأدوات التي تحتاجها لإنشاء أفضل المشاريع وإدارتها بسهولة وبأقل جهد ممكن!
+                                                        <br />
+                                        تم إنشاء هذا النظام لطلاب المعهد العاالي للدراساات المتطوره /فرع القطااميه  للمساعدة في تسهيل عملية إنشاء المشاريع وإدارتها وعرضها!
+                                 </p>
+
                         <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
                             <div class="rounded-md shadow">
-                                   {{-- او صفحه تسجيل الدخول --}}
-                                <a href="{{ route('login') }}"  
+                                <a href="{{ route('login') }}"
                                     class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">
-                                    Get started
+                                    ابداء الان 
                                 </a>
                             </div>
                             <div class="mt-3 sm:mt-0 sm:ml-3">
@@ -150,14 +142,13 @@
         </div>
         <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
             <img class="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full"
-               {{-- src="https://scontent.fcai21-2.fna.fbcdn.net/v/t39.30808-6/541642853_1230841159056495_4792431510364202302_n.jpg?stp=dst-jpg_s640x640_tt6&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHjBiZTKcr5ewyOv6dd8tSP4dCzuNRq0TPh0LO41GrRM8igq9fhhU4VmL8XliS0lXHzPuSoq2VweYbK7XVwPqcm&_nc_ohc=XRmBiTUBRlgQ7kNvwGTE6pS&_nc_oc=Adnn4oRQfcolmwVUTfBJ9Vkti4-nlvzaAes_XfUPD1zhvPWmWv9Vsjq7mb_elzLhh6c&_nc_zt=23&_nc_ht=scontent.fcai21-2.fna&_nc_gid=pKBvMJtU7PZtEW8iV-5AIg&oh=00_AfYaVW0nOhcSYJ-Gs1Wse9T4iYMEvojtwHQOYByb3wVYgw&oe=68C21E01" --}}
-            src="https://scontent.fcai21-2.fna.fbcdn.net/v/t39.30808-6/541642853_1230841159056495_4792431510364202302_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeHjBiZTKcr5ewyOv6dd8tSP4dCzuNRq0TPh0LO41GrRM8igq9fhhU4VmL8XliS0lXHzPuSoq2VweYbK7XVwPqcm&_nc_ohc=3R8rPUsrApMQ7kNvwG96_yg&_nc_oc=AdlMybsCpCS1jkUnEffz-h_ZIX5AERO81-GfLqL_lm2MOgkuOpJr-9R_2XEhkrzNqPc&_nc_zt=23&_nc_ht=scontent.fcai21-2.fna&_nc_gid=Vf6A6Y5HhXK-iX0LWCp46g&oh=00_Afd4fMk8c0vV99aSvddjSKYJMaS5yhpOuic_Qs5yk_dY7A&oe=6901D681"
-                alt="">
+               src="{{ asset('images\photo.avif') }}"
+                alt="logo">
         </div>
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
-
-</body>
 <x-footer />
+</body>
+
 
 </html>

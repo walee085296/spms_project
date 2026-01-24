@@ -110,3 +110,38 @@ Route::group(['middleware' => ['auth']], function () {
 require __DIR__ . '/auth.php';
 
 
+
+
+
+// ==============================
+//     Lecturer Notifications
+// ==============================
+
+use App\Http\Controllers\Lecturer\NotificationController as LecturerNotification;
+
+Route::middleware(['auth', 'role:lecturer'])->prefix('lecturer')->name('lecturer.')->group(function () {
+
+    // صفحة إنشاء تنبيه جديد
+    Route::get('/notifications/create', [LecturerNotification::class, 'create'])
+        ->name('notifications.create');
+
+    // حفظ التنبيه
+    Route::post('/notifications/store', [LecturerNotification::class, 'store'])
+        ->name('notifications.store');
+
+});
+
+
+// ==============================
+//         Student Notifications
+// ==============================
+
+use App\Http\Controllers\Student\NotificationController as StudentNotification;
+
+Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')->group(function () {
+
+    // عرض التنبيهات
+    Route::get('/notifications', [StudentNotification::class, 'index'])
+        ->name('notifications.index');
+
+});

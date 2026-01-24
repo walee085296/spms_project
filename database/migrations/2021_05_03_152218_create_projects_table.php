@@ -41,7 +41,7 @@ class CreateProjectsTable extends Migration
             $table->json('tasks');
 
             // رابط المشروع (قد يكون رابط GitHub أو عرض تجريبي)
-            $table->string('url')->default('http://localhost:8000/');
+            $table->string('url')->nullable();
 
             // معرف المشرف على المشروع (supervisor)
             $table->unsignedBigInteger('supervisor_id')->nullable();

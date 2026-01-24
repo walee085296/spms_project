@@ -13,13 +13,18 @@
                                      <x-flash-message />
 
                                  <div class="bg-white shadow rounded-lg p-6">
-                                     <h3 class="text-xl font-semibold mb-4">Welcome to Dashboard Motatawera</h3>
-                
-                                 </div>
+                                        <h3 class="text-xl font-semibold mb-4">
+        مرحبًا بك في نظام إدارة مشاريع الطلاب – أداة متكاملة لتسهيل إنشاء، متابعة، وتقييم مشاريع التخرج
+                                                      </h3>
+                                                        <h3 class="text-xl font-semibold mb-4">
+        مرحبًا بك في نظام SPMS – كل ما تحتاجه لإدارة مشاريع التخرج بسهولة وكفاءة
+    </h3>
+                                  </div>
+
                                  
          
                         </div>
-                          <img  src="D:\SPMS-main\SPMS-main\Logo.png"/>
+                          {{-- <img  src="D:\SPMS-main\SPMS-main\Logo.png"/> --}}
             </div>
         </div>
     </div>

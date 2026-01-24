@@ -9,18 +9,24 @@
             <div class="flex">
                 
                 <!-- Logo (الشعار) -->
-                <div class="ml-2 flex-shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}"
-                       class="focus:outline-none focus:scale-110 transform transition hover:scale-110">
-                        <x-application-logo
-                            class="block h-20 w-auto fill-current text-gray-300 hover:text-white transition duration-150 ease-in-out" />
-                    </a>
+              <div class="ml-2 flex-shrink-0 flex items-center -mt-3">
+                           <a href="{{ route('dashboard') }}"
+                                    class="focus:outline-none focus:scale-110 transform transition hover:scale-110">
+
+                                    <x-application-logo
+                                       style="height: 120px; width: auto;"
+                                               class="block w-auto fill-current text-gray-300 hover:text-white transition duration-250 ease-in-out" />
+
+                            </a>
                 </div>
+
 
                 <!-- Navigation Links (روابط التنقل) -->
                 <div class="hidden sm:-my-px sm:ml-10 sm:flex">
-                    <!-- الرابط الخاص بالمستخدمين -->
-                    @can('user-list')
+               
+
+                       <!-- الرابط الخاص بالمستخدمين -->
+                     @can('user-list')
                         <x-nav-link :href="route('users.index')" 
                                     :active="str_contains(Route::currentRouteName(), 'users')">
                             {{ __('Users') }}

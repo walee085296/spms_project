@@ -3,7 +3,7 @@
         <!-- شعار الموقع -->
         <x-slot name="logo">
             <a href="/">
-                <x-application-logo class="w-40 h-40 fill-current text-gray-400" />
+                <x-application-logo class="w-40 h-36 fill-current text-gray-400" />
             </a>
         </x-slot>
 
@@ -16,9 +16,9 @@
         <!-- نموذج تسجيل الدخول -->
         <form method="POST" action="{{ route('login') }}">
             @csrf <!-- حماية CSRF -->
-
+                                                             
             <!-- البريد الإلكتروني -->
-            <div>
+            <div>                       
                 <x-label for="email" :value="__('البريد الإلكتروني')" />
 
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email"
@@ -30,7 +30,7 @@
                 <x-label for="password" :value="__('كلمة المرور')" />
                 <div class="flex">
                     <!-- حقل كلمة المرور -->
-                    <x-input id="password" class="mt-1 w-full rounded-r-none"
+                    <x-input id="passc:\Users\waleed\AppData\Local\Temp\Rar$DRa18236.36696.rartemp\SPMS-main\resources\views\welcome.blade.phpword" class="mt-1 w-full rounded-r-none"
                         x-bind:type="show ? 'password' : 'text'" name="password"
                         placeholder="أدخل كلمة المرور" required autocomplete="current-password" />
 

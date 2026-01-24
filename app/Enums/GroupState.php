@@ -4,7 +4,7 @@ namespace App\Enums;
 
 enum GroupState: string
 {
-    case Recruiting = 'looking for members';
-    case Invites = 'invites only';
-    case Full = 'full';
+    case Recruiting = 'يجري البحث عن أعضاء';
+    case Invites = 'بالدعوات فقط';
+    case Full = 'مكتمل ';
 }

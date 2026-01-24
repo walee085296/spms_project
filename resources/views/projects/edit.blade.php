@@ -63,7 +63,7 @@
                                 </div>
 
                                 <!-- حقل Repository -->
-                                <div>
+                                {{-- <div>
                                     <x-label for="repo" :value="__('Project\'s Repository')" />
                                     <select name="repo" class="block mt-1 text-sm text-gray-800 rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full" id="repo">
                                         <option selected value="">Create New</option>
@@ -73,9 +73,9 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> --}}
 
-                                <!-- حقل Type -->
+                                <!-- حقل   نوع المشروع الType -->
                                 <div>
                                     <x-label for="type" :value="__('Project\'s Type')" />
                                     <select name="type" class="block mt-1 text-sm text-gray-800 rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full capitalize" id="type">
@@ -88,7 +88,7 @@
                                     </select>
                                 </div>
 
-                                <!-- حقل Specialization -->
+                                <!-- حقل التخصص Specialization -->
                                 <div>
                                     <x-label for="spec" :value="__('Project\'s Specialization')" />
                                     <select name="spec" class="block mt-1 text-sm text-gray-800 rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full capitalize" id="spec">

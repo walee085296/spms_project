@@ -4,7 +4,7 @@
         
         {{-- القسم الأول: شعار الأكاديمية --}}
         <div class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
-            <a href="https://advancedacademy.edu.eg/Katamia/UnqStud/FirstStudInLec.aspx"
+            <a href="https://advancedacademy.edu.eg/Katamia/RootPages/Introdction.aspx"
                 class="flex title-font items-center md:justify-start justify-center text-white font-bold">
                 <img src="\images\Logo.png" alt="Damascus University">
             </a>
@@ -87,7 +87,7 @@
                 </a>
 
                 {{-- تويتر --}}
-                <a href="" class="ml-3 text-gray-300">
+                <a href="#" class="ml-3 text-gray-300">
                     <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         class="w-5 h-5" viewBox="0 0 24 24">
                         <path
@@ -97,16 +97,23 @@
                 </a>
 
                 {{-- انستغرام --}}
-                <a href="https://relaxed-banoffee-2df85b.netlify.app/" class="ml-3 text-gray-300">
-                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                        stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
-                        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
-                        <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
-                    </svg>
-                </a>
+               <a href="https://www.tiktok.com/@motatawera_kattamia" 
+   class="ml-3 text-gray-300 hover:text-white transition">
+    
+    <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        fill="currentColor" 
+        viewBox="0 0 48 48"
+        class="w-6 h-6"
+    >
+        <path d="M41 16.1c-3.3 0-6.3-1.1-8.7-3v15.3c0 7.4-6.5 12.8-13.8 11.4-4.5-.9-8.2-4.6-9.1-9.1-1.5-7.3 4.1-13.8 11.4-13.8.9 0 1.7.1 2.6.3v4.6c-5.1-1.6-10 2.5-9.2 7.8.5 2.8 2.7 5.1 5.5 5.5 4.8.8 8.9-2.9 8.9-7.6V2.9h5.3c.4 4.9 4.2 8.8 9.1 9.2v4z"/>
+    </svg>
+
+</a>
+
 
                 {{-- لينكدإن --}}
-                <a href="https://www.linkedin.com/in/waled-ali-49a550368/?trk=public-profile-join-page" class="ml-3 text-gray-300">
+                <a href="#" class="ml-3 text-gray-300">
                     <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="0" class="w-5 h-5" viewBox="0 0 24 24">
                         <path stroke="none"
