@@ -111,7 +111,8 @@ _Below is how you install and setup up your own version of the app._
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/DU-EDU-SY/SPMS.git
+ 
+   git clone https://github.com/walee085296/spms_project.git
    ```
    Or you can download the files manually.
 
