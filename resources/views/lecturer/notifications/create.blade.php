@@ -1,6 +1,11 @@
-@extends('layouts.app')
+  <x-app-layout>
+  <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('New Project') }}
+        </h2>
+    </x-slot>
 
-@section('content')
+
 <div class="container">
     <h2 class="mb-4">إنشاء تنبيه جديد</h2>
 
@@ -22,5 +27,4 @@
         <button class="btn btn-primary mt-3">نشر التنبيه</button>
     </form>
 </div>
-@endsection
-
+</x-app-layout>

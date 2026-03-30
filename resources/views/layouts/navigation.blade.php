@@ -23,7 +23,7 @@
 
                 <!-- Navigation Links (روابط التنقل) -->
                 <div class="hidden sm:-my-px sm:ml-10 sm:flex">
-               
+
 
                        <!-- الرابط الخاص بالمستخدمين -->
                      @can('user-list')
@@ -42,20 +42,58 @@
                     @endcan
 
                     <!-- الرابط الخاص بالمجموعات -->
-                    @can('group-list')
+                    @can('project-approve')
                         <x-nav-link :href="route('groups.index')" 
                                     :active="str_contains(Route::currentRouteName(), 'groups')">
-                            {{ __('Groups') }}
+                           {{ __(' Groups') }}
                         </x-nav-link>
                     @endcan
-
+                      
                     <!-- الرابط الخاص بالمشاريع -->
-                    @can('project-list')
+                    @can('project-approve')
                         <x-nav-link :href="route('projects.index')" 
                                     :active="str_contains(Route::currentRouteName(), 'projects')">
                             {{ __('Projects') }}
                         </x-nav-link>
                     @endcan
+                    {{-- ///////////////////////////////////////////////////// --}}
+                     <!-- الرابط الخاص بالمجموعات -->
+                     @can('project-create')
+    @php
+        $projectId = Auth::user()->group->project_id ?? null;
+    @endphp
+
+    @if($projectId)
+        <x-nav-link 
+            :href="route('groups.show',Auth::user()->group)" 
+            :active="str_contains(Route::currentRouteName(), 'groups')">
+            {{ __('MY Group') }}
+        </x-nav-link>
+    @endif
+@endcan
+                      
+                    <!-- الرابط الخاص بالمشاريع -->
+                @can('project-create')
+    @php
+        $projectId = Auth::user()->group->project_id ?? null;
+    @endphp
+
+    @if($projectId)
+        <x-nav-link 
+            :href="route('projects.show',Auth::user()->group->project->id)" 
+            :active="str_contains(Route::currentRouteName(), 'projects')">
+            {{ __('MY Projects') }}
+        </x-nav-link>
+    @endif
+@endcan
+                    {{-- //////////////////////////////////////////// --}}
+
+                        @can('project-approve')
+                        <x-nav-link :href="route('tasks.index')" 
+                                    :active="str_contains(Route::currentRouteName(), 'tasks')">
+                            {{ __('Tasks') }}
+                        </x-nav-link>
+                    @endcan 
                 </div>
             </div>
 

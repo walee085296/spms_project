@@ -129,7 +129,7 @@
                             <div class="text-sm text-gray-800">المشروع الحالي</div>
                             <div class="text-sm text-gray-500">
                                 @if($user->group && $user->project)
-                                    <a class="text-indigo-500 hover:text-indigo-700" href="{{ route('projects.show',$user->project) }}">
+                                    <a class="text-indigo-500 hover:text-indigo-700" href="{{ route('projects.show',$user->name) }}">
                                         {{ $user->project->title }}
                                     </a>
                                 @else

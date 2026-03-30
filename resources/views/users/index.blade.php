@@ -69,6 +69,20 @@
                                     <th scope="col" class="relative px-6 py-3">
                                         <span class="sr-only">Edit</span>
                                     </th>
+
+                                     <th class="text-right">
+                                        <!-- زر تصدير يظهر إذا كان للمستخدم صلاحية export -->
+                                        @can('export', App\Models\Project::class)
+                                        <form action="{{ route('projects.export') }}" method="GET">
+                                            <!-- الاحتفاظ بالفلاتر عند التصدير -->
+                                            @foreach(['spec','type','state','search','created_from','created_to','updated_from','updated_to'] as $field)
+                                                @if(request($field)) <input type="hidden" name="{{ $field }}" value="{{ request($field) }}"> @endif
+                                            @endforeach
+                                            <button class="hover:text-indigo-700" title="Export to excel file">
+                                                <i class="fas fa-file-export"></i>
+                                            </button>
+                                        </form>
+                                        @endcan
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">

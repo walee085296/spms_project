@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Group;
 use App\Enums\ProjectType;
 use App\Enums\ProjectState;
+use App\Enums\projectSup;
 use App\Enums\Specialization;
 use App\Pivots\GroupUser;
 use Illuminate\Support\Carbon;
@@ -24,6 +25,7 @@ class Project extends Model
     protected $fillable = [
         'title',
         'url',
+        'sup',
         'spec',
         'type',
         'state',
@@ -37,8 +39,13 @@ class Project extends Model
         'spec' => Specialization::class,
         'type' => ProjectType::class,
         'state' => ProjectState::class,
+        'sup'=> projectSup::class,
+         
     ];
-
+  public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, fn ($query, $search) =>

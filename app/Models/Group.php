@@ -42,6 +42,8 @@ class Group extends Model
                 ->orWhereRaw("concat(first_name,' ',last_name) like '%{$search}%'"))
         );
     }
+
+    
     public function project()
     {
         return $this->belongsTo(Project::class)->withDefault();

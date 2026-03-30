@@ -24,6 +24,25 @@ class GroupController extends Controller
         $this->middleware('permission:group-list', ['only' => ['index', 'show']]);
     }
 
+
+     public function export(Request $request)
+    {
+        $this->authorize('export', Group::class);
+        return Group::with('project')->latest()
+            ->filter(request(['search', 'spec', 'type', 'state','url', 'created_from', 'created_to', 'updated_from', 'updated_to']))
+            ->get()->map(function ($group) {
+                return [
+                    'project_id' => $group->id,
+                    'state' => $group->state,
+                    'spec' => $group->spec,
+                    'project_type' => $group->project_type,
+                    // 'Project Title' => $group->project->title ?? 'N/A',
+                    'Created at' => $group->project->created_at->format('Y/m/d D'),
+                    'Updated at' => $group->project->updated_at->format('Y/m/d D'),
+                ];
+            })
+            ->downloadExcel('Groups.xlsx', null, true);
+    }
     // عرض قائمة الجروبات
     public function index(Request $request)
     {
@@ -58,7 +77,7 @@ class GroupController extends Controller
     {
         $this->authorize('create', Group::class); // التحقق من صلاحية المستخدم
         // إذا لم يكن لدى المستخدم تخصص محدد
-        if (request()->user()->spec === Specialization::None) {
+        if (request()->user()->spec === Specialization::a) {
             return redirect()->back()->with('error', 'Request a specialization before creating a group!');
         }
 
@@ -70,7 +89,7 @@ class GroupController extends Controller
         ]);
 
         // التحقق من أن التخصص الذي يريد إنشاء الجروب به يطابق تخصص المستخدم
-        if (Specialization::from(request()->spec) !== Specialization::None) {
+        if (Specialization::from(request()->spec) !== Specialization::a) {
             if (Specialization::from(request()->spec)->name !== request()->user()->spec->name) {
                 return redirect()->back()->withError('Cannot create a group of specialization ' . $request->spec . '!')->withInput();
             }
@@ -129,7 +148,7 @@ class GroupController extends Controller
         ]);
 
         // التأكد من أن المستخدم لا ينشئ أو يغير الجروب لتخصص مختلف
-        if (Specialization::from(request()->spec) !== Specialization::None) {
+        if (Specialization::from(request()->spec) !== Specialization::a) {
             if (Specialization::from(request()->spec)->name !== request()->user()->spec->name) {
                 return redirect()->back()->withError('Cannot create a group of specialization ' . $request->spec . '!')->withInput();
             }

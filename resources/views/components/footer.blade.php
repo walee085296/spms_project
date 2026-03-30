@@ -1,4 +1,4 @@
-<footer class="text-gray-200 bg-gray-700">
+<footer class="text-gray-800 bg-gray-900">
     {{-- الحاوية الرئيسية للفوتر --}}
     <div class="max-w-7xl px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
         
@@ -6,7 +6,7 @@
         <div class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
             <a href="https://advancedacademy.edu.eg/Katamia/RootPages/Introdction.aspx"
                 class="flex title-font items-center md:justify-start justify-center text-white font-bold">
-                <img src="\images\Logo.png" alt="Damascus University">
+                <img src="\images\Logo.png" alt="EL-motatawera">
             </a>
         </div>
 
@@ -73,7 +73,7 @@
         <div class="max-w-7xl mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
             {{-- نص حقوق الطبع --}}
             <p class="text-gray-300 text-sm text-center sm:text-left">
-                © 2025 / 2026 EL_Mmotatawera (فرع القطاميه)
+                © 2025 / 2026 EL_motatawera (فرع القطاميه)
             </p>
 
             {{-- أيقونات وسائل التواصل الاجتماعي --}}

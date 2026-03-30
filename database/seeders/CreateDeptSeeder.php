@@ -27,7 +27,7 @@ class CreateDeptSeeder extends Seeder
          * يحتوي على عمود واحد فقط وهو الاسم (name)
          */
         Dept::create([
-            'name' => 'IT Software'  // اسم القسم
+            'name' => 'تطبيات الويب'  // اسم القسم
         ]);
     }
 }

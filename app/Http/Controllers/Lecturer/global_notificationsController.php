@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Notification;
 use Illuminate\Support\Facades\Auth;
 
-class NotificationController extends Controller
+class global_notificationsController extends Controller
 {
     /**
      * صفحة إنشاء تنبيه جديد
@@ -27,15 +27,15 @@ class NotificationController extends Controller
             'message' => 'required|string',
         ]);
 
-        Notification::create([
+       Notification::create([
             'title'   => $request->title,
             'message' => $request->message,
             'sender_id' => Auth::id(),
             'type' => 'general', // تنبيه عام لكل الطلاب
         ]);
 
-        return redirect()
+        return redirect( )
             ->back()
-            ->with('success', 'تم نشر التنبيه بنجاح ✔');
+            ->with('success', 'تم نشر التنبيه بنجاح ✔',);
     }
 }

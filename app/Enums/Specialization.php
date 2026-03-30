@@ -4,9 +4,9 @@ namespace App\Enums;
 
 enum Specialization: string
 {
-    case None = 'غير محدد';
-    case Software = 'تطبيقات الويب'; 
-    case Communication = 'تطبيقات الهااتف';
-    case AI = "واجهاات المسخدم";
-    case Security = "ديسكتوب ";
+    case a = 'none';
+    case b = 'تطبيقات الويب'; 
+    case c = 'تطبيقات الهااتف';
+    case d = "واجهاات المسخدم";
+    case e = "تطبيقات سطح المكتب";
 }

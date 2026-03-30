@@ -29,7 +29,7 @@ class CreateAdminUserSeeder extends Seeder
             'last_name' => 'ali',              // الاسم الأخير
             'stdsn' => '21141709',             // رقم الطالب (Student Serial Number)
             'email' => 'waleed@gmail.com',     // البريد الإلكتروني للأدمن
-            'spec' => Specialization::Software, // التخصص (Software Engineering)
+            'spec' => Specialization::a, // التخصص (Software Engineering)
             'password' => bcrypt('12345678'),  // كلمة المرور بعد التشفير
         ]);
 

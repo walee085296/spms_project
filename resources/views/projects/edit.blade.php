@@ -63,18 +63,27 @@
                                 </div>
 
                                 <!-- حقل Repository -->
-                                {{-- <div>
-                                    <x-label for="repo" :value="__('Project\'s Repository')" />
-                                    <select name="repo" class="block mt-1 text-sm text-gray-800 rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full" id="repo">
-                                        <option selected value="">Create New</option>
+
+                                <div>
+                                    <x-label for="repo" :value="__('ريبو المشروع')" />
+                                   
+                                    
+                                    <x-input error="repo" class="block mt-1 w-full" type="text" name="repo"
+                                     placeholder="Repository URL"  :value="$project->repo" autofocus />
+                                </div>
+                                             {{-- <div>
+                                    <x-label for="repo" :value="__('ريبو المشروع')" />
+                                    <select name="repo"
+                                        class="block mt-1 text-sm text-gray-800 rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full"
+                                        id="repo">
+                                        <option selected value="">انشاء جديد</option>
                                         @foreach ($repos as $repo)
-                                            <option class="capitalize" @selected($repo['url']==$project->url) value="{{ $repo['url'] }}">
-                                                {{ $repo['name'] }}
-                                            </option>
+                                        <option class="capitalize" @selected($repo['url']==old('repo')) value="{{
+                                            $repo['url'] }}">{{ $repo['name'] }}</option>
                                         @endforeach
                                     </select>
                                 </div> --}}
-
+                       
                                 <!-- حقل   نوع المشروع الType -->
                                 <div>
                                     <x-label for="type" :value="__('Project\'s Type')" />
@@ -87,6 +96,27 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                    <!-- حقل المشرف Supervisor -->
+                                   {{-- <div>
+                                    <x-label for="sup" :value="__('Project\'s Supervisor')" />
+                                    <select name="sup" class="block mt-1 text-sm text-gray-800 rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full capitalize" id="sup">
+                                        <option disabled>Select Supervisor</option>
+                                        @foreach ($sups as $sup)
+                                            <option class="capitalize" @selected($sup->value == $project->supervisor_id) value="{{ $sup->value }}">
+                                                {{ $sup->value }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div> --}}
+                                  {{-- <div>
+                                    <x-label for="sup" :value="__('Project\'s Supervisor')" />
+                                   
+                                    <x-input error="sup" class="block mt-1 w-full" type="text" name="sup"
+                                        placeholder="Project Supervisor" :value="$project->sup" autofocus />
+                                </div> --}}
+                                  <div>
+ 
+
 
                                 <!-- حقل التخصص Specialization -->
                                 <div>

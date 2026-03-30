@@ -15,24 +15,20 @@
                     <form method="POST" action="{{ route('projects.store') }}">
                         @csrf
                         <div class="grid grid-row-2 gap-6 mt-4 border-b border-gray-300 pb-8">
+                            
                             <div class="grid grid-cols-2 gap-6">
                                 <div>
                                     <x-label for="title" :value="__('عنوان المشروع')" />
                                     <x-input error="title" class="block mt-1 w-full" type="text" name="title"
                                         placeholder="عنوان المشروع" :value="old('title')" autofocus />
                                 </div>
-                                <div>
+                            <div>
                                     <x-label for="repo" :value="__('ريبو المشروع')" />
-                                    <select name="repo"
-                                        class="block mt-1 text-sm text-gray-800 rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full"
-                                        id="repo">
-                                        <option selected value="">انشاء جديد</option>
-                                        @foreach ($repos as $repo)
-                                        <option class="capitalize" @selected($repo['url']==old('repo')) value="{{
-                                            $repo['url'] }}">{{ $repo['name'] }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                   
+                                    <x-input error="repo" class="block mt-1 w-full" type="text" name="repo"
+                                     placeholder="Repository URL"  :value="old('repo')" autofocus />
+                                   
+                        </div>
                                 @can('project-create')
                                 <div>
                                     <x-label for="type" :value="__('نوع المشروع')" />
@@ -46,19 +42,21 @@
                                         @endforeach
                                     </select>
                                 </div>
+
+                                {{-- حقل اضافه مشرف  --}}
                                  <div>
-                                    <x-label for="spec" :value="__('مشرف المشروع ')" />
-                                    <select name="specc"
-                                        class="block mt-1 text-sm text-gray-800 rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 w-full capitalize"
-                                        id="specc">
-                                        <option selected disabled>اختار تخصص</option>
-                                        @foreach ($specs as $spec)
-                                        <option class="capitalize" @selected($spec->value == old('spec')) value="{{
-                                            $spec->value }}">{{ $spec->value }}</option>
-                                        @endforeach
-                                    </select>
+                                    <x-label for="project_sup" :value="__('مشرف المشروع ')" />
+                                   <select name="sup" id="sup" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                                      @foreach ($sups as $sup)
+                                            <option value="{{ $sup }}" 
+                                                    {{ old('sup') == $sup ? 'selected' : $sup }}>
+                                                         {{ $sup}}
+                                            </option>
+                                     @endforeach
+                                   </select>
+
                                 </div>
-                               
+                               {{-- اضافه تخصص المشروع --}}
                                 <div>
                                     <x-label for="spec" :value="__('تخصص المشروع')" />
                                     <select name="spec"
@@ -73,6 +71,7 @@
                                 </div>
                                 @endcan
                                 @can('project-approve')
+                                {{-- حاله اضافه مشروع --}}
                                 <div>
                                     <x-label for="state" :value="__('حاله المشروع')" />
                                     <select name="state"

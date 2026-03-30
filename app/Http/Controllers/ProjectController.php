@@ -3,20 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Enums\GroupState;
-use Carbon\Carbon;
-use App\Models\Project;
-use App\Enums\ProjectType;
 use App\Enums\ProjectState;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
+use App\Enums\ProjectSup;
+use App\Enums\ProjectType;
 use App\Enums\Specialization;
+// use App\Enums\ProjectSup;
+use App\Http\Controllers\Controller;
+
+use App\Models\Project;
+use App\Models\Task;
+use App\Models\Tasks;
+
+use App\Models\User;
+use Carbon\Carbon;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Enum;
 use Laravel\Socialite\Facades\Socialite;
+use Spatie\Permission\Models\Role;
 
 class ProjectController extends Controller
+
+
+
 {
     /**
      * Display a listing of the resource.
@@ -29,14 +41,18 @@ class ProjectController extends Controller
         $this->middleware('permission:project-supervise', ['only' => ['supervise', 'unsupervise']]);
         $this->middleware('permission:project-approve', ['only' => ['approve', 'disapprove']]);
     }
+
     public function index(Request $request)
     {
         $specs = Specialization::cases();
         $types = ProjectType::cases();
         $states = ProjectState::cases();
+        $sup = ProjectSup::cases();
         $projects = Project::with('group')->latest()->filter(request(['search', 'spec', 'type', 'state', 'created_from', 'created_to', 'updated_from', 'updated_to']))
             ->paginate(10)->withQueryString();
-        return view('projects.index', compact(['projects', 'specs', 'types', 'states']))
+
+     
+        return view('projects.index', compact(['projects', 'specs', 'types', 'states','sup']))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -44,13 +60,16 @@ class ProjectController extends Controller
     {
         $this->authorize('export', Project::class);
         return Project::with('group')->latest()
-            ->filter(request(['search', 'spec', 'type', 'state', 'created_from', 'created_to', 'updated_from', 'updated_to']))
+            ->filter(request(['search', 'spec', 'type', 'state','url', 'created_from', 'created_to', 'updated_from', 'updated_to']))
             ->get()->map(function ($project) {
                 return [
                     'Title' => $project->title,
+                    // 'sup'=>$project->sup,
                     'Type' => ucfirst($project->type->value),
+                    'sup' => ucfirst($project->sup->value),
                     'Spec' => ucfirst($project->spec->value),
                     'State' => ucfirst($project->state->value),
+                    'url'   =>  ucfirst($project->url),
                     'Supervisor' => $project->supervisor->name,
                     'Team' => $project->group ? $project->group->developers->map(function ($user) {
                         return ['name' => $user->name];
@@ -66,37 +85,19 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function create()
-    // {
-    //     $this->authorize('create', Project::class);
-    //     $repos = 'https://github.com/walee085296/spms_project#';
-    //     $specs = Specialization::cases();
-    //     $types = ProjectType::cases();
-    //     $states = ProjectState::cases();
-    //     return view('projects.create', compact(['specs', 'types', 'states', 'repos']));
-    // }
-
-        public function create()
+   
+        public function create(Request $request,User $user)
     {
         $this->authorize('create', Project::class); // التأكد من الصلاحية
-
-        // جلب قائمة الريبو من GitHub (إذا محددة في .env)
-        $reposUrl = env('GITHUB_ORG', 'https://api.github.com/users/walee085296/repos');
-
-           $repos =   Http::get($reposUrl)->json();
-
-            // Http::withToken(env('GITHUB_TOKEN'))
-            //      ->get(env('GITHUB_ORG'))
-            //      ->json();
-        //    $repos = Http::get("https://api.github.com/users/walee085296/repos")->json();
-        // Http::get($reposUrl)->json();
 
         // تمرير التخصصات وأنواع المشاريع وحالاتها لواجهة المستخدم
         $specs = Specialization::cases();
         $types = ProjectType::cases();
+        $sups = ProjectSup::cases();
         $states = ProjectState::cases();
 
-        return view('projects.create', compact(['specs', 'types', 'states', 'repos']));
+
+        return view('projects.create', compact(['specs', 'types','sups', 'states']));
     }
 
     /**
@@ -105,32 +106,52 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-   public function store(Request $request)
+   public function store(Request $request, User $user)
 {
     $this->authorize('create', Project::class);
 
-    // 🔥 الحصول على آخر جروب للطالب
+    // الحصول على آخر جروب للطالب
     $group = $request->user()->groups->last();
-
-    // ----------------------------------------------------------
-    // 🔒 الشرط (1): منع إنشاء مشروع بدون مجموعة
-    // ----------------------------------------------------------
+     
+    //  الشرط (1): منع إنشاء مشروع بدون مجموعة
     if (!$group) {
         return redirect()->back()
             ->with('error', 'You must join a group before creating a project.');
     }
 
-    // ----------------------------------------------------------
-    // 🔒 الشرط (2): منع الطالب من إنشاء أكثر من مشروع
-    // ----------------------------------------------------------
+     if ($user->role === 'student') {
+        return $user->spec === $project->spec;
+    }
+
+    //    منع المستخدم من اختيار تخصص مختلف
+      if (Specialization::from(request()->spec) !== Specialization::a) {
+            if (Specialization::from(request()->spec)->name !== request()->user()->spec->name) {
+                return redirect()->back()->withError('Cannot create a group of specialization ' . $request->spec . '!')->withInput();
+            }
+        }
+      $projectSpec = Specialization::from($request->spec);
+$supervisor = ProjectSup::from($request->sup);
+
+// لو المشرف مش None
+if ($supervisor !== ProjectSup::a) {
+
+    // لو تخصص المشرف لا يساوي تخصص المشروع
+    if ($supervisor->specialization() !== $projectSpec) {
+        return redirect()->back()
+            ->withError('* تخصص المشرف لا يتطابق مع تخصص المشروع  !')
+            ->withInput();
+    } 
+}
+
+    //  الشرط (2): منع الطالب من إنشاء أكثر من مشروع
     if ($group->project_id) {
         return redirect()->back()
             ->with('error', 'Your group already has a project. You cannot create another one.');
     }
-    // ----------------------------------------------------------
 
     $this->validate($request, [
         'title' => 'required|unique:projects,title',
+        'sup' => 'required',
         'type' => [new Enum(ProjectType::class)],
         'spec' => [new Enum(Specialization::class)],
         'state' => [new Enum(ProjectState::class)],
@@ -141,7 +162,7 @@ class ProjectController extends Controller
         'tasks' => 'required|array|min:1',
         'tasks.*' => 'required|string',
     ]);
-
+    //   $supEnum = ProjectSup::from($request->sup); // هنا يتحول string لـ Enum
     $aims = collect($request->aims)->transform(fn($aim) => [
         'name' => $aim,
         'complete' => false
@@ -157,36 +178,28 @@ class ProjectController extends Controller
         'complete' => false
     ]);
 
-    // GitHub Repo (اختياري)
-    if (!$request->repo) {
-        if ($request->state == ProjectState::Incomplete || $request->state == ProjectState::Evaluating) {
-            $response = Http::withToken(env('GITHUB_TOKEN'))->post(env('GITHUB_ORG').'/repos', [
-                'name' => Str::slug($request->title),
-                'private' => false,
-            ]);
-            $new_repo = $response->json('url');
-        }
-        $new_repo = null;
-    }
+  
+
 
     $project = Project::create([
         'title' => $request->title,
-        'url' => $request->repo ?? $new_repo,
+        'url' => $request->repo ,
+        'sup' => $request->sup, // هنا القيمة الصحيحة بدون تحويل
         'type' => $request->user()->can('project-create') ? $request->type : $group->project_type,
         'spec' => $request->user()->can('project-create') ? $request->spec : $group->spec ?? 'General',
         'state' => $request->user()->can('project-approve') ? $request->state : ProjectState::Proposition,
         'aims' => json_encode($aims),
         'objectives' => json_encode($objectives),
         'tasks' => json_encode($tasks),
-        'supervisor_id' => $request->supervise,
-          'readme_url' => $request->readme_url,   // ← هنا
+        // 'readme_url' => $request->readme_url,   // ← هنا
+
     ]);
 
     // ربط المشروع بالجروب
     $group->update(['project_id' => $project->id]);
 
     return redirect()->route('projects.index')
-        ->with('success', 'Project created successfully.');
+        ->with('success', 'تم انشاء المشروع بنجااح.');
 }
 
     /**
@@ -194,55 +207,15 @@ class ProjectController extends Controller
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
-     */
+    */
     public function show($id)
 {
-    $project = Project::with('group', 'supervisor')->find($id);
+    $project = Project::with('group', 'supervisor','tasks.checklists')->find($id);
 
-    // 1️⃣ لو مفيش URL من الأساس → رجّع الصفحة بدون GitHub
-    if (!$project->url) {
-        $markdown = '<p class="text-red-700">لا يوجد رابط GitHub لهذا المشروع.</p>';
-        $github = null;
-        $languages = [];
-        return view('projects.show', compact('project', 'markdown', 'github', 'languages'));
-    }
-
-    // 2️⃣ محاولة الاتصال بـ GitHub مع Catch لأي خطأ
-    try {
-        Http::withToken(env('GITHUB_TOKEN'))->get($project->url)->json();
-    } catch (\Exception $e) {
-        $github = cache()->get('github' . $id);
-        $markdown = cache()->get('markdown' . $id, '<p class="text-red-700">لا يمكن الاتصال بخوادم GitHub الآن. حاول لاحقًا.</p>');
-        $languages = cache()->get("languages.$id", []);
-        return view('projects.show', compact('project', 'markdown', 'github', 'languages'));
-    }
-
-    // 3️⃣ GitHub Request مع Cache
-    $github = cache()->remember(
-        'github' . $project->id,
-        21600,
-        fn () => Http::withToken(env('GITHUB_TOKEN'))->get($project->url)->json()
-    );
-
-    $markdownResponse = Http::withToken(env('GITHUB_TOKEN'))
-        ->accept('application/vnd.github.html')
-        ->get($project->url . '/readme');
-
-    $markdown = cache()->remember(
-        'markdown' . $project->id,
-        21600,
-        fn () => $markdownResponse->failed() ? '<p class="text-red-700">لا يمكن جلب ملف README.</p>' : $markdownResponse->body()
-    );
-
-    $languages = cache()->remember(
-        "languages.$project->id",
-        21600,
-        fn () => $github && isset($github['languages_url'])
-            ? Http::withToken(env('GITHUB_TOKEN'))->get($github['languages_url'])->json()
-            : []
-    );
-
-    return view('projects.show', compact('project', 'markdown', 'github', 'languages'));
+    
+  
+    $link = $project->url;
+    return view('projects.show', compact('project',   'link'));
 }
 
 
@@ -252,16 +225,33 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+   
     public function edit($id)
-    {
-        $project = Project::find($id);
-        $this->authorize('edit', $project);
-        $repos = Http::get(env('GITHUB_ORG').'/repos')->json();
-        $specs = Specialization::cases();
-        $types = ProjectType::cases();
-        $states = ProjectState::cases();
-        return view('projects.edit', compact(['project', 'specs', 'types', 'states', 'repos']));
-    }
+{
+    $project = Project::findOrFail($id);
+    $this->authorize('edit', $project);
+
+   
+     $response = Http::withHeaders([
+        'Authorization' => 'token ' . env('GITHUB_TOKEN'),
+        'Accept' => 'application/vnd.github+json',
+    ])->get(env('GITHUB_ORG') . '/repos', [
+        'per_page' => 100 // يجيب 100 repo
+    ]);
+
+    // جلب قائمة الريبو من GitHub (إذا محددة في .env)
+        $reposUrl = env('GITHUB_ORG', 'https://api.github.com/users/walee085296/repos');
+
+            // $repos = Http::withToken(env('GITHUB_TOKEN'))->get($reposUrl)->json();
+      $repos =   Http::get($reposUrl)->json();
+
+    $specs = Specialization::cases();
+    $types = ProjectType::cases();
+    $states = ProjectState::cases();
+
+    return view('projects.edit', compact('project', 'specs', 'types', 'states', 'repos'));
+}
+
 
     /**
      * Update the specified resource in storage.
@@ -270,7 +260,7 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+     public function update(Request $request, $id)
     {
         $project = Project::find($id);
         $this->authorize('edit', $project);
@@ -303,23 +293,24 @@ class ProjectController extends Controller
                 'complete' => in_array($task, $request->tasks_complete ?? [])
             ];
         });
-        if (!$request->repo) {
-            if ($request->state == ProjectState::Incomplete || $request->state == ProjectState::Evaluating) {
-                $response = Http::withToken(env('GITHUB_TOKEN'))->post(env('GITHUB_ORG').'/repos', [
-                    'name' => Str::slug($request->title),
-                    'private' => false,
-                ]);
-                $new_repo = $response->json('url');
-            }
-            $new_repo = null;
+        // GitHub Repo (اختياري)
+    if (!$request->repo) {
+        if ($request->state == ProjectState::Incomplete || $request->state == ProjectState::Evaluating) {
+            $response = Http::withToken(env('GITHUB_TOKEN'))->post(env('GITHUB_ORG').'/repos', [
+                'name' => Str::slug($request->title),
+                'private' => false,
+            ]);
+            $new_repo = $response->json('url');
         }
+                 $new_repo = null;
+    }
         if ($request->user()->can('project-approve')) {
             $project->update([
                 'title' => $request->title,
                 'type' => $request->type,
                 'spec' => $request->spec,
                 'state' => $request->state,
-                'url' => $request->repo ?? $new_repo,
+                'url' => $request->repo ?: $new_repo,
                 'aims' => json_encode($aims),
                 'objectives' => json_encode($objectives),
                 'tasks' => json_encode($tasks),
@@ -329,6 +320,7 @@ class ProjectController extends Controller
                 'title' => $request->title,
                 'type' => $request->type,
                 'spec' => $request->spec,
+                'url' => $request->repo ?? $new_repo,
                 'aims' => json_encode($aims),
                 'objectives' => json_encode($objectives),
                 'tasks' => json_encode($tasks),
@@ -337,6 +329,7 @@ class ProjectController extends Controller
         if ($request->supervise = true && !$project->supervisor) {
             $project->supervisor()->associate(auth()->user())->save();
         }
+        
         return redirect()->route('projects.index')
             ->with('success', 'Project updated successfully');
     }
@@ -371,7 +364,7 @@ class ProjectController extends Controller
         if ($project->group == null ?? false) {
             return redirect()->back()->with('error', 'A group is already assigned to this project');
         }
-        if ($project->spec != Specialization::None && $project->spec != $group->spec) {
+        if ($project->spec != Specialization::a && $project->spec != $group->spec) {
             return redirect()->back()->with('error', 'This project is not for your group\'s specialization');
         }
         if ($project->type != $group->project_type) {

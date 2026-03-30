@@ -6,7 +6,7 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Projects') }} <!-- عنوان الصفحة -->
         </h2>
-
+          
         <!-- زر إنشاء مشروع جديد يظهر فقط إذا كان للمستخدم صلاحية create -->
         @can('create', App\Models\Project::class)
         <a href="{{ route('projects.create') }}">
@@ -94,6 +94,7 @@
                     </x-search>
                 </div>
 
+                
                 <!-- زر لإظهار المزيد من الفلاتر -->
                 <div class="flex items-center">
                     <span @click="more = ! more" class="cursor-pointer">
@@ -151,6 +152,7 @@
                                 <tr>
                                     <!-- رؤوس الأعمدة -->
                                     <th>Project's Title</th>
+                                    <th>Supervisor Dr </th>
                                     <th>Project's type</th>
                                     <th>Specialization</th>
                                     <th>Project's Supervisor</th>
@@ -179,6 +181,8 @@
                                 <tr class="border-b border-gray-200 align-text-top">
                                     <!-- عنوان المشروع -->
                                     <td><a href="{{ route('projects.show', $project->id) }}">{{ $project->title }}</a></td>
+                                       {{-- مشرف المشروع --}}
+                                    <td>{{ $project->sup}}</td>
                                     <!-- نوع المشروع -->
                                     <td>{{ $project->type->value }}</td>
                                     <!-- التخصص -->
@@ -218,7 +222,7 @@
 
                 <!-- Pagination -->
                 <div class="py-8">
-                    @if ($projects->hasMorePages())
+                    @if ($projects->hasMorePages() || $projects->currentPage() > 1)
                         {!! $projects->links() !!}
                     @endif
                 </div>

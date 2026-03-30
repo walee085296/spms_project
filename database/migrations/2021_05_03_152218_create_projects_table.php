@@ -24,7 +24,9 @@ class CreateProjectsTable extends Migration
 
             // التخصص (specification) مثل: AI, Web, Mobile ...
             $table->string('spec')->default('none');
-
+            
+            $table->string('sup')->default('عاطف رسلان');
+            
             // نوع المشروع (مثلاً: senior أو junior)
             $table->string('type')->default('senior');
 

@@ -62,6 +62,17 @@
                                     <th scope="col" class="relative px-6 py-3">
                                         <span class="sr-only">تعديل</span>
                                     </th>
+                                    <!-- زر تصدير يظهر إذا كان للمستخدم صلاحية export -->
+                                      <th class="text-right">
+                                        <!-- زر تصدير يظهر إذا كان للمستخدم صلاحية export -->
+                                        @can('export', App\Models\Group::class)
+                                        <form action="{{ route('groups.export') }}" method="GET">            
+                                            <button class="hover:text-indigo-700" title="Export to excel file">
+                                                <i class="fas fa-file-export"></i>
+                                            </button>
+                                        </form>
+                                        @endcan
+                                         </th>
                                 </tr>
                             </thead>
 

@@ -100,6 +100,7 @@
 
                         <div class="space-y-4 p-2">
                             {{-- عرض الأهداف (Aims) --}}
+                           
                             <div class="border-b border-gray-300 pb-4">
                                 <h1 class="font-semibold text-base text-gray-800 leading-tight pb-2">الأهداف:</h1>
                                 <ol class="list-disc list-inside">
@@ -149,15 +150,14 @@
                     <div class="p-8 bg-white text-gray-800">
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight">ملف README.md</h2>
                         <div class="mt-2 text-sm text-gray-700">
-                            @if (!is_array($markdown))
-                            <x-readme>
-                                {!! $markdown ?? 'لا يوجد محتوى بعد.'!!} {{-- عرض محتوى Markdown --}}
-                            </x-readme>
+                          @if($link)
+                            <div >
+                              <a href="{{ $link }}" target="_blank" class="text-sm text-indigo-500 hover:text-indigo-700">عرض ملفات المشروع</a>
+                            </div>
                             @else
-                            <p class="py-12">
-                                لا يوجد ملف README حتى الآن. {{-- إذا لم يكن موجود --}}
-                            </p>
+                            <p >لا يوجد ملف README.md بعد.</p>
                             @endif
+                            {{-- <button><a href="{{ $link }}" target="_blank" class="text-sm text-indigo-500 hover:text-indigo-700"> عرض ملفاات المشروع</a></button> --}}
                         </div>
                     </div>
                 </div>
@@ -194,34 +194,7 @@
                 </div>
             </div>
 
-            {{-- بطاقة المستودع --}}
-            <div class="bg-white overflow-hidden shadow-lg rounded-3xl">
-                <div class="p-6 bg-white">
-                    <div class="items-end p-2">
-                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">المستودع</h2>
-                        <div class="grid grid-cols-2 gap-1 mt-2">
-                            <h2 class="font-semibold text-base text-gray-800 leading-tight">Github:</h2>
-                            @if ($github)
-                            <a href="{{ $github['html_url'] }}" target="_blank"
-                                class="text-sm text-indigo-500 hover:text-indigo-700 text-right capitalize">{{ $github['full_name'] }}</a>
-                            @else
-                            <span class="text-sm text-gray-700 text-right">غير متاح</span>
-                            @endif
-
-                            <h2 class="font-semibold text-base text-gray-800 leading-tight">المشاكل المفتوحة:</h2>
-                            <span class="text-sm text-gray-700 text-right capitalize">{{ $github['open_issues_count'] ?? 'غير متاح' }}</span>
-
-                            <h2 class="font-semibold text-base text-gray-800 leading-tight col-span-2">اللغات المستخدمة:</h2>
-                            @forelse ($languages as $language => $value)
-                            <span class="text-sm text-gray-700 text-left capitalize">{{ $language }}:</span>
-                            <span class="text-sm text-gray-700 text-right capitalize">{{ round($value/$languages->sum()*100,2).'%' }}</span>
-                            @empty
-                            <span class="text-sm text-gray-700 text-left capitalize">غير متاح</span>
-                            @endforelse
-                        </div>
-                    </div>
-                </div>
-            </div>
+           
 
             {{-- بطاقة مجموعة التطوير --}}
             <div class="bg-white overflow-hidden shadow-lg rounded-3xl">
@@ -268,7 +241,7 @@
                         @endif
 
                         @else {{-- إذا لا يوجد مشرف --}}
-                        @can('project-supervise')
+                        @can('project-approve') {{-- إذا كان المستخدم لديه إذن الموافقة على المشروع، عرض زر الإشراف --}}
                         <a href="{{ route('projects.supervise',$project->id) }}" class="mt-1 py-2 bg-gray-50 px-2 flex justify-center rounded-lg font-semibold text-blue-700 border border-gray-300">الإشراف على المشروع</a>
                         @else
                         لا يوجد مشرف بعد
@@ -283,7 +256,7 @@
                         <a href="{{ route('projects.unassign',$project->id) }}">
                             <x-modal action="إلغاء تعيين المجموعة" type="button">
                                 <x-slot name="trigger">
-                                    <button @click.prevent="showModal = true" class="px-2 py-2 w-full bg-red-50 flex justify-center rounded-lg font-semibold text-red-700 border border-red-700 hover:border-red-500 hover:text-red-500 focus:outline-none">إلغاء تعيين المجموعة</button>
+                                    {{-- <button @click.prevent="showModal = true" class="px-2 py-2 w-full bg-red-50 flex justify-center rounded-lg font-semibold text-red-700 border border-red-700 hover:border-red-500 hover:text-red-500 focus:outline-none">إلغاء تعيين المجموعة</button> --}}
                                 </x-slot>
                                 <x-slot name="title">
                                     <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">إلغاء تعيين المجموعة</h3>
@@ -295,9 +268,9 @@
                                 </x-slot>
                             </x-modal>
                         </a>
-                        @else
+                        {{-- @else --}}
                         {{-- زر إرسال طلب الانضمام --}}
-                        <a href="{{ route('requests.store',$project->group->id) }}" class="py-2 bg-gray-50 px-2 flex justify-center rounded-lg font-semibold text-blue-700 border border-gray-300">إرسال طلب الانضمام</a>
+                        {{-- <a href="{{ route('requests.store',$project->group->id) }}" class="py-2 bg-gray-50 px-2 flex justify-center rounded-lg font-semibold text-blue-700 border border-gray-300">إرسال طلب الانضمام</a> --}}
                         @endif
                         @endonce
 
@@ -315,7 +288,6 @@
                             </div>
                         </a>
                         @empty
-                        <a href="{{ route('projects.assign',$project->id) }}" class="py-2 bg-gray-50 px-2 flex justify-center rounded-lg font-semibold text-blue-700 border border-gray-300">تعيين المشروع</a>
                         @endforelse
                     </div>
                 </div>
