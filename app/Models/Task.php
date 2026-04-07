@@ -10,6 +10,7 @@ class Task extends Model
     protected $fillable = [
         'project_id',
         'url',
+        'comment',
         'desc'
     ];
 
@@ -20,6 +21,17 @@ class Task extends Model
     public function checklists()
     {
         return $this->hasMany(Checklist::class);
+    }
+
+
+       public function supervisedProjects()
+    {
+    return $this->hasMany(Project::class, 'supervisor_id');
+    }
+
+     public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
    

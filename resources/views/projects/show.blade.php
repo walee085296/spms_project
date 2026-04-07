@@ -174,11 +174,11 @@
                         <h2 class="font-semibold text-xl text-gray-800 leading-tight">حول المشروع</h2>
                         <div class="grid grid-cols-2 gap-1 mt-2">
                             <h2 class="font-semibold text-base text-gray-800 leading-tight">النوع:</h2>
-                            <span class="text-sm text-gray-700 text-right capitalize">{{ $project->type->value . ' مشروع'}}</span>
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{{ $project->type->value }}</span>
                             <h2 class="font-semibold text-base text-gray-800 leading-tight">التخصص:</h2>
-                            <span class="text-sm text-gray-700 text-right capitalize">{{ $project->spec->value }}</span>
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{{ $project->spec->value }}</span>
                             <h2 class="font-semibold text-base text-gray-800 leading-tight">الحالة:</h2>
-                            <span class="text-sm text-gray-700 text-right capitalize">{{ $project->state->value }}</span>
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">{{ $project->state->value }}</span>
                         </div>
                     </div>
                 </div>
@@ -220,13 +220,14 @@
                         </a>
 
                         {{-- زر التخلي عن المشروع --}}
+                        @can('project-approve')
                         @if ($project->supervisor_id == Auth::id())
                         <a href="{{ route('projects.abandon',$project->id) }}">
                             <x-modal action="التخلي عن المشروع" type="button">
                                 <x-slot name="trigger">
-                                    <button @click.prevent="showModal = true" class="mt-1 px-2 py-2 w-full bg-red-50 flex justify-center rounded-lg font-semibold text-red-700 border border-red-700 hover:border-red-500 hover:text-red-500 focus:outline-none">
+                                    {{-- <button @click.prevent="showModal = true" class="mt-1 px-2 py-2 w-full bg-red-50 flex justify-center rounded-lg font-semibold text-red-700 border border-red-700 hover:border-red-500 hover:text-red-500 focus:outline-none">
                                         التخلي عن المشروع
-                                    </button>
+                                    </button> --}}
                                 </x-slot>
                                 <x-slot name="title">
                                     <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">التخلي عن المشروع</h3>
@@ -238,8 +239,8 @@
                                 </x-slot>
                             </x-modal>
                         </a>
-                        @endif
-
+                        @endif   
+                        @endcan
                         @else {{-- إذا لا يوجد مشرف --}}
                         @can('project-approve') {{-- إذا كان المستخدم لديه إذن الموافقة على المشروع، عرض زر الإشراف --}}
                         <a href="{{ route('projects.supervise',$project->id) }}" class="mt-1 py-2 bg-gray-50 px-2 flex justify-center rounded-lg font-semibold text-blue-700 border border-gray-300">الإشراف على المشروع</a>

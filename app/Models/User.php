@@ -55,6 +55,10 @@ class User extends Authenticatable
         'last_login_at' => 'datetime',
         'spec' => Specialization::class,
     ];
+    public function supervisedProjects()
+    {
+    return $this->hasMany(Project::class, 'supervisor_id');
+    }
 
     public function getNameAttribute()
     {
@@ -85,6 +89,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Group::class)->using(GroupUser::class);
     }
+    //  public function Specialization()
+    // {
+    //     return "{$this->spec} ";
+    // }
     public function getGroupAttribute()
     {
         return $this->groups->last();

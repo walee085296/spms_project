@@ -42,17 +42,19 @@ class ProjectController extends Controller
         $this->middleware('permission:project-approve', ['only' => ['approve', 'disapprove']]);
     }
 
-    public function index(Request $request)
-    {
+    public function index(Request $request ,User $user)
+    {   
         $specs = Specialization::cases();
         $types = ProjectType::cases();
         $states = ProjectState::cases();
         $sup = ProjectSup::cases();
-        $projects = Project::with('group')->latest()->filter(request(['search', 'spec', 'type', 'state', 'created_from', 'created_to', 'updated_from', 'updated_to']))
-            ->paginate(10)->withQueryString();
+        // $projects = Project::with('group')->latest()->filter(request(['search', 'spec', 'type', 'state', 'created_from', 'created_to', 'updated_from', 'updated_to']))
+        //     ->paginate(10)->withQueryString();
 
+       $projects = Auth::user()->supervisedProjects()->with('group')->latest()->filter(request(['search', 'spec', 'type', 'state', 'created_from', 'created_to', 'updated_from', 'updated_to']))
+            ->paginate(10)->withQueryString();
      
-        return view('projects.index', compact(['projects', 'specs', 'types', 'states','sup']))
+        return view('projects.index', compact(['projects', 'specs', 'types', 'states','sup','user']))
             ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 

@@ -46,6 +46,10 @@ class Project extends Model
     {
         return $this->hasMany(Task::class);
     }
+//     public function supervisor()
+// {
+//     return $this->belongsTo(User::class, 'supervisor_id');
+// }
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, fn ($query, $search) =>

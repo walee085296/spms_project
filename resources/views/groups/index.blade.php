@@ -9,7 +9,7 @@
 
         {{-- ================= زر إنشاء مجموعة جديدة ================= --}}
         <div>
-            @can('create', App\Models\Group::class)
+            @can('project-approve')
                 <a href="{{ route('groups.create') }}">
                     <x-button class="text-xs" type="button">
                         {{ __('إنشاء مجموعة جديدة') }}

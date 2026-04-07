@@ -8,15 +8,15 @@
         </h2>
           
         <!-- زر إنشاء مشروع جديد يظهر فقط إذا كان للمستخدم صلاحية create -->
-        @can('create', App\Models\Project::class)
-        <a href="{{ route('projects.create') }}">
+        @can('project-create')
+         <a href="{{ route('projects.create') }}">
             <x-button class="text-xs" type="button">
                 {{ __('Create New project') }}
             </x-button>
         </a>
         @endcan
     </x-slot>
-
+{{-- 
     <!-- قسم الفلاتر -->
     <x-slot name="filters">
         <div class="space-y-2 md:space-y-0 transition-padding" x-data="{ more: false }">
@@ -93,7 +93,7 @@
                         @if (request('state')) <input type="hidden" name="state" value="{{ request('state') }}"> @endif
                     </x-search>
                 </div>
-
+                
                 
                 <!-- زر لإظهار المزيد من الفلاتر -->
                 <div class="flex items-center">
@@ -137,7 +137,29 @@
                 </div>
             </form>
         </div>
-    </x-slot>
+    </x-slot> --}}
+                
+        <x-slot name="filters">
+     {{-- <!-- Dropdown Specialization --> --}}
+                 <x-dropdown name="spec" id="spec">
+                    <x-slot name="trigger">
+                        <button class="w-[95vw] md:w-auto ...">
+                            {{ isset(request()->spec) ? ucwords(request()->spec) : 'Select Specialization' }}
+                            <i class="fa fa-angle-down ml-2"></i>
+                        </button>
+                    </x-slot>
+                    <x-slot name="content">
+                        @foreach($specs as $spec)
+                        @if(!($user->spec === $spec->name))
+                        <x-dropdown-link class="capitalize"
+                            href="/projects?spec={{ $spec->value }}&{{ http_build_query(request()->except('spec', 'page')) }}">
+                            {{ $spec->value }}
+                        </x-dropdown-link>
+                        @endif
+                        @endforeach
+                    </x-slot>
+                </x-dropdown>
+</x-slot> 
 
     <!-- جدول عرض المشاريع -->
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">

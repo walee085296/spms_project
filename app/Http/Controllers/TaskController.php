@@ -17,33 +17,125 @@ class TaskController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    
-   public function index(Task $tasks,User $user, Project $project)
-{     
-      $user = Auth::user();
 
-    // لو Admin يرجع كل التاسكات مباشرة
-    if ($user->id === 1) { // افترض أن ID Admin هو 1
-        $tasks = Task::with('project')->get();
-    } else {
-        // لو مش Admin، جلب مشروع المستخدم الحالي
-        $projectId = $user->group->project_id ?? null;
+  
+public function index(Request $request)
+{
+    $user = auth()->user();
+    $state = $request->state;
+ $projectId = $user->group->project_id ?? null;
+ $projectIds = $user->supervisedProjects()->pluck('id');
+    // 🟢 Query أساسي
+    $query = Task::with('project')
+        ->join('projects', 'tasks.project_id', '=', 'projects.id')
+        ->select('tasks.*');
 
-        // لو مفيش مشروع مرتبط → يرجع مجموعة فارغة
-        if (!$projectId) {
-            $tasks = collect();
+      if (!$projectId ) { // لو مفيش مشروع مرتبط → يرجع مجموعة فارغة
+        // 🟡 المشاريع اللي هو مشرف عليها
+        
+
+        $query->whereIn('tasks.project_id', $projectIds);
+
+        // فلترة بالحالة
+        if (!is_null($state)) {
+            $query->where('tasks.state', $state);
+        }
+           
+
+     
+
+        $tasks = $query
+            ->orderBy('projects.title', 'asc')
+            ->paginate(30);
+
+        $stats = [
+            'all' => Task::whereIn('project_id', $projectIds)->count(),
+            'pending' => Task::whereIn('project_id', $projectIds)->where('state', 0)->count(),
+            'completed' => Task::whereIn('project_id', $projectIds)->where('state', 1)->count(),
+            'rejected' => Task::whereIn('project_id', $projectIds)->where('state', 2)->count(),
+        ];
+   
+   
+      
         } else {
             // جلب التاسكات الخاصة بالمشروع
             $tasks = Task::with('project')
                 ->where('project_id', $projectId)
                 ->get();
-          
-        }
-        
-    }
 
-    return view('tasks.index', compact('tasks','project'));
+        $stats = [
+            'all' => Task::whereIn('project_id', $projectIds)->count(),
+            'pending' => Task::whereIn('project_id', $projectIds)->where('state', 0)->count(),
+            'completed' => Task::whereIn('project_id', $projectIds)->where('state', 1)->count(),
+            'rejected' => Task::whereIn('project_id', $projectIds)->where('state', 2)->count(),
+        ];
+        }
+
+    return view('tasks.index', compact('tasks', 'stats', 'state'));
 }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    
+//    public function index(Task $tasks,User $user, Project $project,Request $request)
+// {     
+//       $user = Auth::user();
+//     $projectIds = $user->supervisedProjects()->pluck('id');
+//       $query = Task::with('project');
+
+// //     // فلترة حسب الحالة
+//     if ($request->has('state') && $request->state !== null) {
+//         $query->where('state', $request->state);
+//     }
+
+//     // لو Admin يرجع كل التاسكات مباشرة
+//     if ($user->id === 1) { // افترض أن ID Admin هو 1
+//         // $tasks = Task::with('project')->get();
+//        $tasks = Task::join('projects', 'tasks.project_id', '=', 'projects.id')
+//     ->select('tasks.*')
+//     ->orderBy('projects.title', 'asc')
+//     ->with('project')
+//     ->paginate(200);
+//          $stats = [
+//          'all' => Task::whereIn('project_id', $projectIds)->count(),
+//         'pending' => Task::whereIn('project_id', $projectIds)->where('state', 0)->count(),
+//         'completed' => Task::whereIn('project_id', $projectIds)->where('state', 1)->count(),
+//         'rejected' => Task::whereIn('project_id', $projectIds)->where('state', 2)->count(),
+//     ];
+
+//     } else {
+//         // لو مش Admin، جلب مشروع المستخدم الحالي
+//         $projectId = $user->group->project_id ?? null;
+
+//         // لو مفيش مشروع مرتبط → يرجع مجموعة فارغة
+//         if (!$projectId) {
+//             $tasks = collect();
+//         } else {
+//             // جلب التاسكات الخاصة بالمشروع
+//             $tasks = Task::with('project')
+//                 ->where('project_id', $projectId)
+//                 ->get();
+          
+// $tasks = $query->latest()->get();
+//         }
+//          $stats = [
+//         'all' => Task::whereIn('project_id', $projectIds)->count(),
+//         'pending' => Task::whereIn('project_id', $projectIds)->where('state', 0)->count(),
+//         'completed' => Task::whereIn('project_id', $projectIds)->where('state', 1)->count(),
+//         'rejected' => Task::whereIn('project_id', $projectIds)->where('state', 2)->count(),
+//     ];
+
+//     }
+    
+
+ 
+//     return view('tasks.index', compact('tasks','project', 'stats'))
+//     ->with('i', (request()->input('page', 1) - 1) * 5);
+// }
 
 public function create()
 {
@@ -100,10 +192,11 @@ $task->load('project'); // ✅
 }
 public function updateState(Request $request, Task $task)
 {
-    // $task->update([
-    //     'state' => $request->state
-    // ]);
-     $task->state = $request->has('state') ? 1 : 0;
+    $task->update([
+        'state' => $request->state
+    ]);
+     $task->state = $request->state ;
+    //  $task->state = !$task->state ; // عكس الحالة الحالية
     $task->save();
 
 
@@ -135,6 +228,24 @@ public function addtask(Request $request, $id)
         ->with('success', 'تم تحديث التاسك بنجاح');
 }
 
+public function addcomment(Request $request, $id)
+{
+    $request->validate([
+        'comment' => 'required|string|max:255',
+
+    ]);
+
+    $task = Task::findOrFail($id);
+
+    $task->update([
+        'comment' => $request->comment
+    ]);
+    
+    $task->save();
+
+    return redirect()->route('tasks.index')
+        ->with('success', 'تم إضافة التعليق بنجاح');
+}
      public function edit(Task $task)
     {
         $task->load('project');
@@ -144,6 +255,7 @@ public function addtask(Request $request, $id)
 
      public function update(Request $request, Task $task)
     {
+
         $request->validate([
             'aims' => 'required|array'
         ]);

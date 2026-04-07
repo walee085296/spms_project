@@ -36,7 +36,7 @@ Route::get('auth/github/callback', [GitHubController::class, 'handleProviderCall
 Route::group(['middleware' => ['auth']], function () {
 
     // لوحة التحكم (Dashboard)
-    Route::get('dashboard', [DashboardController::class, 'index'])
+    Route::get('dashboard', [TaskController::class, 'index'])
         ->name('dashboard');
 
     // عرض الملف الشخصي
@@ -110,24 +110,22 @@ Route::group(['middleware' => ['auth']], function () {
 
     // مزامنة بيانات المشروع
     Route::get('projects/{project}/sync', [ProjectController::class, 'sync'])->name('projects.sync');
-Route::resource('tasks', TaskController::class);
-    // Route::resource('tasks', [TaskController::class]);
-    
-    //  Route::get('tasks', [TaskController::class, 'index'])->name('task.index');
-    //  Route::post('tasks', [TaskController::class, 'store'])->name('task.create');
-//   Route::resource('tasks', ProjectController::class);
-Route::get('tasks', [TaskController::class, 'index'])->name('tasks.index');
-Route::get('tasks/create', [TaskController::class, 'create'])->name('tasks.create');
-Route::post('tasks/create', [TaskController::class, 'create'])->name('tasks.create');
-Route::get('tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
-Route::post('tasks', [TaskController::class, 'store'])->name('tasks.store');
-Route::post('/tasks/{id}/addtask', [TaskController::class, 'addtask'])->name('tasks.addtask');
-Route::post('/tasks/{task}/state', [TaskController::class, 'updateState'])->name('tasks.updateState');
-Route::post('/tasks/{task}/state', [TaskController::class,'updateState'])->name('tasks.state');
-Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+    Route::resource('tasks', TaskController::class);
+    Route::get('tasks', [TaskController::class, 'index'])->name('tasks.index');
+    Route::get('tasks/create', [TaskController::class, 'create'])->name('tasks.create');
+    Route::post('tasks/create', [TaskController::class, 'create'])->name('tasks.create');
+    Route::get('tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+    Route::post('tasks', [TaskController::class, 'store'])->name('tasks.store');
+    Route::post('/tasks/{id}/addtask', [TaskController::class, 'addtask'])->name('tasks.addtask');
+    Route::post('/tasks/{id}/addcomment', [TaskController::class, 'addcomment'])->name('tasks.addcomment');
+    Route::post('/tasks/{task}/state', [TaskController::class, 'updateState'])->name('tasks.updateState');
+    Route::post('/tasks/{task}/state', [TaskController::class,'updateState'])->name('tasks.state');
+    Route::get('/tasks/{task}', [TaskController::class, 'show'])->name('tasks.show');
+    Route::get('/admin/dashboard', [TaskController::class, 'dashboard'])
+           ->middleware('auth')
+           ->name('admin.dashboard');
 
 });
-
 
 // استدعاء Routes الخاصة بالمصادقة (login, register, forgot password ...)
 require __DIR__ . '/auth.php';
@@ -147,13 +145,12 @@ require __DIR__ . '/auth.php';
 //         Student Notifications
 // ==============================
 
-use App\Http\Controllers\Student\NotificationController as StudentNotification;
+// use App\Http\Controllers\Student\NotificationController as StudentNotification;
 // use App\Http\Controllers\TaskController;
 
-Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')->group(function () {
+// Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')->group(function () {
 
-    // عرض التنبيهات
-    Route::get('/notifications', [StudentNotification::class, 'index'])
-        ->name('notifications.index');
+//     // عرض التنبيهات
+//     Route::get('/notifications', [StudentNotification::class, 'index'])
+//         ->name('notifications.index');
 
-});
