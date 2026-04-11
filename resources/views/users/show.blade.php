@@ -86,8 +86,9 @@
                             </div>
                             <div class="text-sm text-gray-500">
                                 @if($user->group)
-                                <a class="text-indigo-500 hover:text-indigo-700" href="{{ route('groups.show',$user->group) }}">#{{ $user->group->id }}</a>
-                                @else
+                                <a class="text-indigo-500 hover:text-indigo-700" href="{{ route('groups.show',$user->group) }}">#
+                                    {{ $user->group->id }}</a>
+                                 @else
                                 None yet
                                 @endif
                             </div>
@@ -106,17 +107,16 @@
                                 Current project
                             </div>
                             <div class="text-sm text-gray-500">
-                                @if($user->group)
-                                @if ($user->project)
-                                <a class="text-indigo-500 hover:text-indigo-700" href="{{ route('projects.show',$user->project) }}">
-                                    {{ $user->project->title }}
-                                </a>
-                                @else
+                               
+                                @if($user->group && $user->group->project)
+                                <a class="text-indigo-500 hover:text-indigo-700" >#
+                                    {{ $user->group->project->id }}</a>
+                                 @else
                                 None yet
+                                
                                 @endif
-                                @else
-                                None yet
-                                @endif
+
+                             
                             </div>
                         </div>
                     </div>
@@ -145,5 +145,8 @@
             </div>
         </div>
     </div>
-    <x-button>wertyu</x-button>
+    <x-button class="mx-auto mb-6" onclick="window.history.back()">
+        {{ __('Go Back') }}
+    </x-button>
+    
 </x-app-layout>

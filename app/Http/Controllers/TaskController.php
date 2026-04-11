@@ -137,10 +137,15 @@ public function index(Request $request)
 //     ->with('i', (request()->input('page', 1) - 1) * 5);
 // }
 
-public function create()
-{
-    $tasks = Task::with('checklists','project')->get();
-     $projects = Project::all();
+public function create(User $user, Project $project)
+{       // جلب المستخدم المسجل حالياً (المشرف)
+    $user = auth()->user(); 
+    
+    // جلب فقط المشاريع التي يشرف عليها هذا المستخدم
+    $projects = $user->supervisedProjects; 
+
+    // جلب التاسكات مع علاقاتها (إذا كنت تحتاجها في صفحة الكاريه)
+    $tasks = Task::with('checklists', 'project')->get();
     return view('tasks.create', compact('tasks', 'projects'));
 }
 
@@ -152,9 +157,19 @@ public function store(Request $request ,Project $project)
     ]);
 
     // لو المشرف اختار إرسال التاسك لكل المشاريع
-    if ($request->all_projects) {
+    // if ($request->all_projects) {
 
-        $projects = Project::all();
+    //     $projects = Project::all();
+
+    //     foreach ($projects as $project) {
+    //         Task::create([
+    //             'project_id' => $project->id,
+    //             'desc' => $request->desc,
+    //         ]);
+    //     }
+    if ($request->has('all_projects')) {
+        // الأفضل: إرسال التاسك فقط للمشاريع التي يشرف عليها هذا المستخدم حالياً
+        $projects = auth()->user()->supervisedProjects;
 
         foreach ($projects as $project) {
             Task::create([

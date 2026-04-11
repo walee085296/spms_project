@@ -60,7 +60,7 @@
                      <!-- الرابط الخاص بالمجموعات -->
                      @can('project-create')
     @php
-        $projectId = Auth::user()->group->project_id ?? null;
+        $projectId = Auth::user()->group?? null;
     @endphp
 
     @if($projectId)

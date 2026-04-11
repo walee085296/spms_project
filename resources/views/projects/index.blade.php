@@ -227,7 +227,7 @@
                                     <td>{{ $project->updated_at->diffforhumans() }}</td>
                                     <!-- زر تعديل يظهر إذا كان للمستخدم صلاحية edit -->
                                     <td class="text-right">
-                                        @can('edit',$project)
+                                        @can('project-edit')
                                         <a href="{{ route('projects.edit',$project->id) }}">Edit</a>
                                         @endcan
                                     </td>

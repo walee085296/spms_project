@@ -14,7 +14,7 @@ use App\Http\Controllers\Controller; // استدعاء الكلاس الأب Con
 use Illuminate\Support\Facades\Auth; // استدعاء Facade الـ Auth
 use Illuminate\Validation\Rules\Enum; // استدعاء Rule للتحقق من الـ Enum
 use Laravel\Socialite\Facades\Socialite; // استدعاء Socialite للتعامل مع GitHub
-
+use App\Models\Project;
 class GroupController extends Controller
 {
     // Constructor للتحكم بالـ middleware
@@ -44,19 +44,32 @@ class GroupController extends Controller
             ->downloadExcel('Groups.xlsx', null, true);
     }
     // عرض قائمة الجروبات
-    public function index(Request $request)
+    public function index(Request $request , Group $group, User $user,Project $project)
     {
-        $user = $request->user(); // جلب المستخدم الحالي
-        // جلب الجروبات مع المشاريع والمطورين
-        $groups = Group::with('project','developers')
-            ->filter(request(['search'])) // دعم الفلترة بالبحث
-            ->latest() // ترتيب حسب الأحدث
-            ->paginate(15) // تقسيم النتائج على صفحات
-            ->withQueryString(); // الاحتفاظ بقيم البحث في روابط الصفحات
+       
+            // $groups = Auth::user()->supervisedProjects()->with('project')
+            // ->filter(request(['search']))
+            // ->latest()
+            // ->paginate(10)
+            // ->withQueryString();
+           
+    // 1. جلب المستخدم الحالي
+    $user = Auth::user();
+
+    // 2. جلب المجموعات المرتبطة بالمشاريع التي يشرف عليها هذا المستخدم
+    // نستخدم "whereIn" للبحث عن المجموعات التي تنتمي لهذه المشاريع
+    $projectIds = $user->supervisedProjects()->pluck('projects.id');
+
+    $groups = Group::with(['project', 'developers']) // هنا العلاقة صحيحة لأننا في موديل Group
+        ->whereIn('project_id', $projectIds)
+        ->filter(request(['search']))
+        ->latest()
+        ->paginate(10)
+        ->withQueryString();
 
         // عرض الصفحة وتمرير البيانات
         return view('groups.index', compact('groups'))
-            ->with('i', (request()->input('page', 1) - 1) * 5); // حساب رقم الصف لكل صفحة
+            ->with('i', (request()->input('page', 1) - 1) * 10); // حساب رقم الصف لكل صفحة
     }
 
     // عرض نموذج إنشاء جروب جديد

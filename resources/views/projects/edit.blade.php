@@ -6,12 +6,14 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Edit Project') }} <!-- عنوان الصفحة -->
         </h2>
-
+            @can('project-approve') <!-- يتحقق من إذن المستخدم "تعديل المشروع" -->
         <!-- نموذج حذف المشروع -->
         <form method="POST" action="{{route('projects.destroy', $project->id)}}">
             @csrf <!-- حماية CSRF -->
             @method('DELETE') <!-- لأن HTML لا يدعم DELETE مباشرة -->
 
+                 
+           
             <!-- مكون Modal للحذف -->
             <x-modal>
                 <x-slot name="trigger">
@@ -35,7 +37,7 @@
                     </p>
                 </x-slot>
             </x-modal>
-        </form>
+        </form>  @endcan
     </x-slot>
 
     <!-- المحتوى الرئيسي -->

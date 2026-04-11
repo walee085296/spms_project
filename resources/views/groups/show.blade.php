@@ -73,7 +73,7 @@
                             @else
                                 <span
                                     class="mt-2 py-2 bg-gray-50 px-2 flex justify-center rounded-lg font-semibold text-gray-500 hover:text-gray-700 cursor-pointer border border-gray-300">
-                                    إرسال طلب انضمام
+                                   
                                 </span>
                             @endcan
                         @else
@@ -109,7 +109,7 @@
                                 <div class="mt-2 bg-gray-50 flex justify-center py-4 md:w-72 rounded-lg border border-gray-300 hover:bg-gray-100">
                                     <div class="flex items-center text-gray-600">
                                         @if($group->state->name === 'Recruiting')
-                                            لا توجد طلبات انضمام حالياً
+                                           
                                         @else
                                             حالة المجموعة هي <span class="ml-1 capitalize text-green-500">{{ $group->state->value }}</span>
                                         @endif

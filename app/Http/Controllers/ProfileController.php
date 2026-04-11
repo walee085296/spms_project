@@ -44,7 +44,10 @@ class ProfileController extends Controller
     public function edit()
     {
         $user = Auth::user(); // المستخدم الحالي
-        return view('profile.edit', compact('user'));
+        $img = $user->avatar ? asset('storage/' . $user->avatar) : null; // رابط صورة الملف الشخصي إذا موجودة
+        
+
+        return view('profile.edit', compact('user', 'img'));
     }
 
     /**
@@ -64,27 +67,31 @@ class ProfileController extends Controller
             'stdsn' => 'digits:7|unique:users,stdsn,' . $user->id, // رقم الطالب
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:8|same:confirm-password',
-            'avatar' => 'nullable|mimes:jpg,jpeg,png|max:5048' // صورة الملف الشخصي
+            'avatar' => 'nullable|mimes:jpg,jpeg,png,webp|max:5048' // صورة الملف الشخصي
         ]);
 
         $input = $request->all();
 
         // لو المستخدم غير الباسورد
         if (!empty($input['password'])) {
-            $user->update([
+            $user->fill([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password), // تشفير الباسورد
+                'avatar' => $request->hasFile('avatar') ? $request->file('avatar')->store('avatars', 'public') : $user->avatar, // حفظ الصورة الجديدة أو الاحتفاظ القديمة
             ]);
         } else {
             $input = Arr::except($input, ['password']); // إزالة كلمة المرور من البيانات
-            $user->update([
+            $user->fill([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'email' => $request->email,
+                'avatar' => $request->hasFile('avatar') ? $request->file('avatar')->store('avatars', 'public') : $user->avatar, // حفظ الصورة الجديدة أو الاحتفاظ القديمة
             ]);
         }
+
+        $user->save();
 
         return redirect()->route('profile.show')
             ->with('success', 'Profile updated successfully'); // رسالة نجاح

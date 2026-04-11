@@ -5,9 +5,13 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight px-4">
             {{ $project->title }} {{-- يعرض عنوان المشروع الحالي --}}
         </h2>
-
+        
         <div class="flex space-x-2"> {{-- حاوية للأزرار (الموافقة، الرفض، إتمام المشروع) مصفوفة أفقياً مع مسافات بينهما --}}
-
+                 <x-Button class="text-xs" type="button">
+             @can('edit',$project)
+                                        <a href="{{ route('projects.edit',$project->id) }}">Edit</a>
+                                        @endcan
+        </x-Button>
             @can('project-approve') {{-- يتحقق من إذن المستخدم "الموافقة على المشروع" --}}
             <form method="GET" action="{{route('projects.approve', $project->id)}}">
                 @csrf {{-- حماية CSRF --}}
